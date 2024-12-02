@@ -1,51 +1,61 @@
-/*
-신호를 받아 LED를 키고 끄는 제어를 담당
-*/
-
 #include <SoftwareSerial.h>
 
-SoftwareSerial BTSerial(2,3); // 2(TX),3(RX)
+SoftwareSerial BTSerial(10, 11); // RX, TX (블루투스 모듈 연결 핀)
 
 // LED Pin
-int RED = 11;
-int GREEN = 10;
-int BLUE = 9;
+int RED = 9;
+int GREEN = 8;
+int BLUE = 7;
   
-void setup()
+void setup() 
 {
-  // Init HC-06
-  Serial.begin(9600);
-  BTSerial.begin(9600);
+    Serial.begin(9600);     // PC 시리얼 모니터 통신
+    BTSerial.begin(9600);   // HC-06 블루투스 모듈 통신 속도 설정
 
-  // Init LED
-  // pinMode(RED, OUTPUT); 
-  // pinMode(GREEN, OUTPUT);
-  // pinMode(BLUE, OUTPUT);
+    // LED 핀 초기화
+    pinMode(RED, OUTPUT); 
+    pinMode(GREEN, OUTPUT);
+    pinMode(BLUE, OUTPUT);
+    
+    analogWrite(RED, 0);
+    analogWrite(GREEN, 0);
+    analogWrite(BLUE, 0);
+
+    Serial.println("LED Control Receiver Ready");
 }
   
-void loop()
+void loop() 
 {
-  if(Serial.available()) // 시리얼 통신으로 문자가 들어오면
-  {
-    BTSerial.write(Serial.read()); // 블루투스시리얼 통신으로 발송
-  }
-  if(BTSerial.available()) // 블루투스 시리얼 통신으로 문자가 들어오면
-  {
-    Serial.write(BTSerial.read()); // 시리얼 창에 표시(시리얼 통신으로 출력)
-  }
-  
-  // analogWrite(RED, 255); // RED ON
-  // analogWrite(GREEN, 0);
-  // analogWrite(BLUE, 0);
-  // delay(1000);
-   
-  // analogWrite(RED, 0);
-  // analogWrite(GREEN, 255); // GREEN ON
-  // analogWrite(BLUE, 0);  
-  // delay(1000);
- 
-  // analogWrite(RED, 0);
-  // analogWrite(GREEN, 0);
-  // analogWrite(BLUE, 255);    // BLUE ON
-  // delay(1000);
+    // HC-06으로부터 데이터 수신
+    if (BTSerial.available()) 
+    {
+        String command = BTSerial.readStringUntil('\n');
+        command.trim();
+        
+        Serial.println("Received Command: " + command);
+
+        // 명령에 따라 LED 제어
+        if (command == "ON") 
+        {
+            // analogWrite(RED, 255);
+            // analogWrite(GREEN, 255);
+            // analogWrite(BLUE, 255);
+            
+            BTSerial.println("LED is ON");
+            Serial.println("LED is ON");
+        } 
+        else if (command == "OFF") 
+        {
+            // analogWrite(RED, 0);
+            // analogWrite(GREEN, 0);
+            // analogWrite(BLUE, 0);
+            
+            BTSerial.println("LED is OFF");
+            Serial.println("LED is OFF");
+        } 
+        else 
+        {
+            Serial.println("Invalid command received.");
+        }
+    }
 }
