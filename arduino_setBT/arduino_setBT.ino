@@ -1,5 +1,5 @@
 /*
-신호를 받아 LED를 키고 끄는 제어를 담당
+블루투스 모듈 세팅
 */
 
 #include <SoftwareSerial.h>
@@ -16,11 +16,6 @@ void setup()
   // Init HC-06
   Serial.begin(9600);
   BTSerial.begin(9600);
-
-  // Init LED
-  // pinMode(RED, OUTPUT); 
-  // pinMode(GREEN, OUTPUT);
-  // pinMode(BLUE, OUTPUT);
 }
   
 void loop()
@@ -33,19 +28,4 @@ void loop()
   {
     Serial.write(BTSerial.read()); // 시리얼 창에 표시(시리얼 통신으로 출력)
   }
-  
-  // analogWrite(RED, 255); // RED ON
-  // analogWrite(GREEN, 0);
-  // analogWrite(BLUE, 0);
-  // delay(1000);
-   
-  // analogWrite(RED, 0);
-  // analogWrite(GREEN, 255); // GREEN ON
-  // analogWrite(BLUE, 0);  
-  // delay(1000);
- 
-  // analogWrite(RED, 0);
-  // analogWrite(GREEN, 0);
-  // analogWrite(BLUE, 255);    // BLUE ON
-  // delay(1000);
 }
