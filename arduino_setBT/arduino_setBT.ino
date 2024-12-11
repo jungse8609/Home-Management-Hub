@@ -4,12 +4,7 @@
 
 #include <SoftwareSerial.h>
 
-SoftwareSerial BTSerial(2,3); // 2(TX),3(RX)
-
-// LED Pin
-int RED = 11;
-int GREEN = 10;
-int BLUE = 9;
+SoftwareSerial BTSerial(10,11); // 2(TX),3(RX)
   
 void setup()
 {
